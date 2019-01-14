@@ -17,11 +17,14 @@ io.on('connection',function(socket){
 
  //emit is used for emmmiting events 1st arg is event name and seconf=d is data
 	
-	// socket.emit('newMessage',{
-	// 	from: 'user101',
-	// 	text: 'abcd',
-	// 	createdAt: 435
-	// });
+	socket.broadcast.emit('newMessage',{
+		from: 'Admin',
+		text: 'New user joined'
+	});
+	socket.emit('newMessage',{
+		from: 'Admin',
+		text: 'Welcome new user'
+	});
 
 	socket.on('createMessage',function(message){
 		console.log('createMessage',message);
@@ -30,8 +33,14 @@ io.on('connection',function(socket){
 			text: message.text,
 			createdAt:new Date().getTime()
 		});
+		// socket.broadcast.emit('newMessage',{
+		// 	from: message.from,
+		// 	text: message.text,
+		// 	createdAt: new Date().getTime()
+		// });
+
 	});
-	socket.on('disconnects',function(){
+	socket.on('disconnect',function(){
 		console.log('Disconnected from sever');
 		});
 });
@@ -41,3 +50,6 @@ server.listen(port,()=>{
 });
 
 module.exports = {app};
+
+//emmitted from front end caught at backend
+//emmitted from backend end caught at fronted

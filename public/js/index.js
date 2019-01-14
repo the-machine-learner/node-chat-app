@@ -2,10 +2,10 @@
 	socket.on('connect',function(){
 		console.log('new user connected');
 
-		socket.emit('createMessage',{
-			to: 'user@gc',
-			text: 'reply'
-		});
+		// socket.emit('createMessage',{
+		// 	to: 'user@gc',
+		// 	text: 'reply'
+		// });
 	});
 	socket.on('disconnect',function(){
 		console.log('Disconnected from sever');
