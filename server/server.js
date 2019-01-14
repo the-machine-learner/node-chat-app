@@ -17,14 +17,19 @@ io.on('connection',function(socket){
 
  //emit is used for emmmiting events 1st arg is event name and seconf=d is data
 	
-	socket.emit('newMessage',{
-		from: 'user101',
-		text: 'abcd',
-		createdAt: 435
-	});
+	// socket.emit('newMessage',{
+	// 	from: 'user101',
+	// 	text: 'abcd',
+	// 	createdAt: 435
+	// });
 
-	socket.on('createMessage',function(Message){
-			console.log('createMessage',Message)
+	socket.on('createMessage',function(message){
+		console.log('createMessage',message);
+		io.emit('newMessage',{
+			from: message.from,
+			text: message.text,
+			createdAt:new Date().getTime()
+		});
 	});
 	socket.on('disconnects',function(){
 		console.log('Disconnected from sever');
