@@ -4,7 +4,7 @@ const socketIO = require('socket.io');   //establishes connection both ways betw
 const http = require('http');
 
 const publicPath = path.join(__dirname,'../public');
-
+const {generateMessage} = require('./utils/message');
 const app = express();
 
 const port = process.env.PORT||3000;
@@ -17,22 +17,12 @@ io.on('connection',function(socket){
 
  //emit is used for emmmiting events 1st arg is event name and seconf=d is data
 	
-	socket.broadcast.emit('newMessage',{
-		from: 'Admin',
-		text: 'New user joined'
-	});
-	socket.emit('newMessage',{
-		from: 'Admin',
-		text: 'Welcome new user'
-	});
+	socket.broadcast.emit('newMessage',generateMessage('Admin','New user joined'));
+	socket.emit('newMessage',generateMessage('Admin','Welcome new user'));
 
 	socket.on('createMessage',function(message){
 		console.log('createMessage',message);
-		io.emit('newMessage',{
-			from: message.from,
-			text: message.text,
-			createdAt:new Date().getTime()
-		});
+		io.emit('newMessage',generateMessage(message.from,message.text));
 		// socket.broadcast.emit('newMessage',{
 		// 	from: message.from,
 		// 	text: message.text,
