@@ -1,4 +1,19 @@
 	var socket = io();
+
+	function scrollToBottom(){
+		var messages = jQuery('#messages');
+		var newMessage = messages.children('li:last-child');
+
+		var clientHeight = messages.prop('clientHeight');
+		var scrollTop = messages.prop('scrollTop');
+		var scrollHeight = messages.prop('scrollHeight');
+		var newMessageHeight = newMessage.innerHeight();
+		var lastMessageHeight = newMessage.prev().innerHeight();
+		if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+			messages.scrollTop(scrollHeight);
+		}
+	} 
+
 	socket.on('connect',function(){
 		console.log('new user connected');
 	});
@@ -16,7 +31,7 @@
 		});
 
 		jQuery('#messages').append(html);
-
+		scrollToBottom();
 		// console.log('new Message',Message);
 		// var li = jQuery('<li></li>');
 		// li.text(`${Message.from} ${formattedTime}:${Message.text}`);
@@ -47,7 +62,7 @@ locationButton.on('click',function(){
 	}
 
 	navigator.geolocation.getCurrentPosition(function(position){
-		console.log('here');
+		// console.log('here');
 		socket.emit('createLocationMessage',{
 			latitude: position.coords.latitude,
 			longitude: position.coords.longitude
@@ -93,6 +108,7 @@ socket.on('newLocationMessage',function(message){
 	jQuery('ol li:last').remove();
 	jQuery('#messages').append(html);
 	locationButton.attr('disabled',false).text('Send Location');
+	scrollToBottom(); 
 });	
 
 
