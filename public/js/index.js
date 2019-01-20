@@ -6,9 +6,10 @@
 		console.log('Disconnected from sever');
 	});	
 	socket.on('newMessage',function(Message){
+		var formattedTime = moment(Message.createdAt).format('h:mm A');
 		console.log('new Message',Message);
 		var li = jQuery('<li></li>');
-		li.text(`${Message.from}:${Message.text}`);
+		li.text(`${Message.from} ${formattedTime}:${Message.text}`);
 		jQuery('#messages').append(li);
 	});
 
@@ -64,10 +65,10 @@ if(jQuery('[name=message]').val()!='')
 
 socket.on('newLocationMessage',function(message){
 	console.log(message);
-
+	var formattedTime = moment(message.createdAt).format('h:mm A');
 	var a = jQuery('<a target="_blank">My current location</a>');
 	var li = jQuery("ol li:last");
-	li.text(`${message.from}: `);
+	li.text(`${message.from} ${formattedTime}: `);
 	a.attr('href',message.url);
 	li.append(a);
 	locationButton.attr('disabled',false).text('Send Location');
